@@ -16,4 +16,4 @@ def get_theta() -> list[int]:
 if __name__ == '__main__':
     theta = get_theta()
     mileage = int(argv[1])
-    print(f"Estimated price is {theta[0] + theta[1] * mileage}")
+    print(f"Estimated price is {float(theta[0]) + float(theta[1]) * mileage}")
