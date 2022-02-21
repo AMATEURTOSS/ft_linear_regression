@@ -4,19 +4,18 @@ import matplotlib.pyplot as plt
 
 class Trainer:
     theta: list[float] = [0.0, 0.0]
-    data_file_name: str = ""
+    data: list[dict] = []
     data_row_count: int = 0
 
     def __init__(self, data_file_name: str):
         data_file = open(data_file_name, "r")
-        self.data_file_name = data_file_name
-        self.data_row_count = sum(1 for _ in data_file)
-        print(self.data_row_count)
-        data_file.close()
-        data_file = open(data_file_name, "r")
         reader = csv.reader(data_file)
-        for km, price in reader:
-            plt.scatter(int(km), int(price))
+        i = 0
+        for mileage, price in reader:
+            self.data.append({"mileage": int(mileage), "price": int(price)})
+            plt.scatter(int(mileage), int(price))
+            i += 1
+        self.data_row_count = i
         data_file.close()
 
     def get_estimate_price(self, theta: list[float], mileage: int):
@@ -24,37 +23,28 @@ class Trainer:
 
     def calc_theta_0(self, theta: list[float]) -> float:
         new_theta = 0
-        data_file = open(self.data_file_name, "r")
-        data_file_reader = csv.reader(data_file)
-        for mileage, price in data_file_reader:
-            mileage = int(mileage)
-            price = int(price)
+        for element in self.data:
+            mileage = int(element["mileage"])
+            price = int(element["price"])
             new_theta += (self.get_estimate_price(theta, mileage) - price)
         new_theta = ((new_theta / self.data_row_count) * 0.01)
-        data_file.close()
         return new_theta
 
     def calc_theta_1(self, theta: list[float]) -> float:
         new_theta = 0
-        data_file = open(self.data_file_name, "r")
-        data_file_reader = csv.reader(data_file)
-        for mileage, price in data_file_reader:
-            mileage = int(mileage)
-            price = int(price)
+        for element in self.data:
+            mileage = int(element["mileage"])
+            price = int(element["price"])
             new_theta += ((self.get_estimate_price(theta, mileage) - price) * mileage)
         new_theta = ((new_theta / self.data_row_count) * 0.00000000015)
-        data_file.close()
         return new_theta
 
     def calc_cost(self, theta) -> int:
-        data_file = open(self.data_file_name, "r")
-        data_file_reader = csv.reader(data_file)
         cost_sum = 0
-        for mileage, price in data_file_reader:
-            mileage = int(mileage)
-            price = int(price)
+        for element in self.data:
+            mileage = int(element["mileage"])
+            price = int(element["price"])
             cost_sum += ((self.get_estimate_price(theta, mileage) - price) ** 2) / self.data_row_count
-        data_file.close()
         return cost_sum
 
     def training(self):
