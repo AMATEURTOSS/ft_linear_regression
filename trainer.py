@@ -47,6 +47,10 @@ class Trainer:
             cost_sum += ((self.get_estimate_price(theta, mileage) - price) ** 2) / self.data_row_count
         return cost_sum
 
+    def write_to_file(self) -> None:
+        theta_file = open("theta.txt", "w+")
+        theta_file.write(f"{self.theta[0]},{self.theta[1]}")
+
     def training(self):
         for i in range(10000):
             prev = self.theta.copy()
@@ -55,6 +59,7 @@ class Trainer:
             print("{0:2} w = {1:.5f}, b = {2:.5f} error = {3:.5f}"
                   .format(i, self.theta[1], self.theta[0], self.calc_cost(self.theta)))
         plt.plot([0, 250000], [self.get_estimate_price(self.theta, 0), self.get_estimate_price(self.theta, 250000)])
+        self.write_to_file()
 
 
 if __name__ == '__main__':
