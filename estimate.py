@@ -18,7 +18,7 @@ def original_data_to_normalized_data(target, max_val, min_val):
 
 
 def normalized_data_to_original_data(target, max_val, min_val):
-    return target * (max_val + min_val) + min_val
+    return target * (max_val - min_val) + min_val
 
 
 if __name__ == '__main__':
@@ -32,6 +32,5 @@ if __name__ == '__main__':
     mileage = int(argv[1])
     normalized_estimated_price = float(normalized_theta0) + float(normalized_theta1) \
                                  * original_data_to_normalized_data(mileage, mileage_max, mileage_min)
-    print(f"normalized price: {normalized_estimated_price}")
     estimated_price = normalized_data_to_original_data(normalized_estimated_price, price_max, price_min)
     print(f"Estimated price is {estimated_price}")

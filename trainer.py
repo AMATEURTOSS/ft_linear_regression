@@ -83,9 +83,10 @@ class Trainer:
         for i in range(10000):
             self.theta[0] -= self.calc_theta_0()  # b - b_grad
             self.theta[1] -= self.calc_theta_1()  # w - w_grad
+            print(f"e: {self.calc_cost()}")
         print(f"w: {self.theta[1]}")
         print(f"b: {self.theta[0]}")
-        print(f"e: {self.calc_cost()}")
+        print(f"estimated 1: {self.get_estimate_price(1)}")
         plt.plot([0, 1], [self.get_estimate_price(0), self.get_estimate_price(1)])  # draw line on graph
         self.write_to_file()
 
