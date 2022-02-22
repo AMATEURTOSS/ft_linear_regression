@@ -1,5 +1,19 @@
 import csv
+import sys
 import matplotlib.pyplot as plt
+
+
+def is_valid_parameter():
+    if len(sys.argv) != 2:
+        print("ERROR: Invalid parameter")
+        print("USAGE: python trainer.py [file_name]")
+        exit(1)
+    try:
+        file = open(sys.argv[1], "r")
+        file.close()
+    except FileNotFoundError:
+        print("ERROR: File not found")
+        exit(1)
 
 
 class Trainer:
@@ -58,6 +72,7 @@ class Trainer:
 
 
 if __name__ == '__main__':
-    tr = Trainer("data.csv")
+    is_valid_parameter()
+    tr = Trainer(sys.argv[1])
     tr.training()
     plt.show()
