@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 
 class Trainer:
-    theta: list[float] = [0.0, 0.0]
-    data: list[dict] = []
+    theta: list = [0.0, 0.0]
+    data: list = []
 
     def __init__(self, data_file_name: str):
         data_file = open(data_file_name, "r")
