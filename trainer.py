@@ -67,13 +67,13 @@ class Trainer:
         new_theta = ((new_theta / len(self.__normalized_data)) * 0.1)
         return new_theta
 
-    def __calc_cost(self) -> int:
+    def __calc_cost(self) -> float:
         cost_sum = 0
         for element in self.__normalized_data:
             mileage = int(element["mileage"])
             price = int(element["price"])
-            cost_sum += ((self.__get_estimate_price(mileage) - price) ** 2) / len(self.__normalized_data)
-        return cost_sum
+            cost_sum += ((self.__get_estimate_price(mileage) - price) ** 2)
+        return cost_sum / len(self.__normalized_data)
 
     def __write_to_file(self) -> None:
         theta_file = open("theta.txt", "w+")
