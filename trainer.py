@@ -77,7 +77,12 @@ class Trainer:
 
     def write_to_file(self) -> None:
         theta_file = open("theta.txt", "w+")
-        theta_file.write(f"{self.theta[0]},{self.theta[1]},{self.mileage_max},{self.mileage_min},{self.price_max},{self.price_min}")
+        theta_file.write(f"{self.theta[0]},"
+                         f"{self.theta[1]},"
+                         f"{self.mileage_max},"
+                         f"{self.mileage_min},"
+                         f"{self.price_max},"
+                         f"{self.price_min}")
 
     def training(self):
         for i in range(10000):
@@ -86,8 +91,7 @@ class Trainer:
             print(f"e: {self.calc_cost()}")
         print(f"w: {self.theta[1]}")
         print(f"b: {self.theta[0]}")
-        print(f"estimated 1: {self.get_estimate_price(1)}")
-        plt.plot([0, 1], [self.get_estimate_price(0), self.get_estimate_price(1)])  # draw line on graph
+        plt.plot([0, 1], [self.get_estimate_price(0), self.get_estimate_price(1)])
         self.write_to_file()
 
 
