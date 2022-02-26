@@ -107,11 +107,11 @@ class Trainer:
 
     def training(self):
         for i in range(10000):
-            self.__theta[0] -= self.__calc_theta_0()  # b - b_grad
-            self.__theta[1] -= self.__calc_theta_1()  # w - w_grad
             self.__x.append(self.__theta[0])
             self.__y.append(self.__theta[1])
             self.__z.append(self.__calc_cost())
+            self.__theta[0] -= self.__calc_theta_0()  # b - b_grad
+            self.__theta[1] -= self.__calc_theta_1()  # w - w_grad
         print(f"w: {self.__theta[1]}")
         print(f"b: {self.__theta[0]}")
         print(f"e: {self.__calc_cost()}")
