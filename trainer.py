@@ -24,6 +24,9 @@ class Trainer:
     __mileage_min: int
     __price_max: int
     __price_min: int
+    __x = []  # x value for cost graph (bios)
+    __y = []  # y value for cost graph (weight)
+    __z = []  # z value for cost graph (cost)
 
     def __init__(self, data_file_name: str):
         data_file = open(data_file_name, "r")
@@ -44,7 +47,6 @@ class Trainer:
             normalized_mileage = (mileage - self.__mileage_min) / (self.__mileage_max - self.__mileage_min)
             normalized_price = (price - self.__price_min) / (self.__price_max - self.__price_min)
             self.__normalized_data.append({"mileage": normalized_mileage, "price": normalized_price})
-            plt.scatter(normalized_mileage, normalized_price)
 
     def __get_estimate_price(self, mileage: int):
         return self.__theta[0] + self.__theta[1] * mileage
@@ -84,14 +86,37 @@ class Trainer:
                          f"{self.__price_max},"
                          f"{self.__price_min}")
 
+    def __draw_linear_regression_graph(self) -> None:
+        plt.figure()
+        ax = plt.axes()
+        ax.set_title('ft_linear_regression')
+        ax.set_ylabel('price')
+        ax.set_xlabel('mileage')
+        for element in self.__normalized_data:
+            plt.scatter(element["mileage"], element["price"])
+        plt.plot([0, 1], [self.__get_estimate_price(0), self.__get_estimate_price(1)])
+
+    def __draw_cost_graph(self) -> None:
+        plt.figure()
+        ax = plt.axes(projection='3d')
+        ax.set_title('E according to W and B')
+        ax.set_xlabel('bios')
+        ax.set_ylabel('weight')
+        ax.set_zlabel('cost')
+        ax.plot3D(self.__x, self.__y, self.__z, 'green')
+
     def training(self):
         for i in range(10000):
             self.__theta[0] -= self.__calc_theta_0()  # b - b_grad
             self.__theta[1] -= self.__calc_theta_1()  # w - w_grad
+            self.__x.append(self.__theta[0])
+            self.__y.append(self.__theta[1])
+            self.__z.append(self.__calc_cost())
         print(f"w: {self.__theta[1]}")
         print(f"b: {self.__theta[0]}")
         print(f"e: {self.__calc_cost()}")
-        plt.plot([0, 1], [self.__get_estimate_price(0), self.__get_estimate_price(1)])
+        self.__draw_linear_regression_graph()
+        self.__draw_cost_graph()
         self.__write_to_file()
 
 
