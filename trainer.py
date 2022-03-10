@@ -72,8 +72,8 @@ class Trainer:
     def __calc_cost(self) -> float:
         cost_sum = 0
         for element in self.__normalized_data:
-            mileage = int(element["mileage"])
-            price = int(element["price"])
+            mileage = float(element["mileage"])
+            price = float(element["price"])
             cost_sum += ((self.__get_estimate_price(mileage) - price) ** 2)
         return cost_sum / len(self.__normalized_data)
 
@@ -99,7 +99,7 @@ class Trainer:
     def __draw_cost_graph(self) -> None:
         plt.figure()
         ax = plt.axes(projection='3d')
-        ax.set_title('E according to W and B')
+        ax.set_title('cost according to W and B')
         ax.set_xlabel('bios')
         ax.set_ylabel('weight')
         ax.set_zlabel('cost')
